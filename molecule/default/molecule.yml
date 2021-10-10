@@ -1,0 +1,46 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  yamllint
+  ansible-lint
+  flake8
+platforms:
+  - name: instance-centos7
+    image: "brettdah/centos7-for-molecule-test:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    privileged: True
+    pre_build_image: True
+    volumes:
+      - /sys/fs/cgroup/:/sys/fs/cgroup:ro
+        #  - name: instance-rocky8
+        #    image: "brettdah/rocky8-for-molecule-test:latest"
+        #    command: ${MOLECULE_DOCKER_COMMAND:-""}
+        #    privileged: True
+        #    pre_build_image: True
+        #    volumes:
+        #      - /sys/fs/cgroup/:/sys/fs/cgroup:ro
+  - name: instance-debian9
+    image: "brettdah/debian9-for-molecule-test:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    privileged: True
+    pre_build_image: True
+    volumes:
+      - /sys/fs/cgroup/:/sys/fs/cgroup:ro
+  - name: instance-debian10
+    image: "brettdah/debian10-for-molecule-test:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    privileged: True
+    pre_build_image: True
+    volumes:
+      - /sys/fs/cgroup/:/sys/fs/cgroup:ro
+provisioner:
+  lint:
+    name: ansible-lint
+  name: ansible
+  log: True
+verifier:
+  name: ansible
+  lint:
